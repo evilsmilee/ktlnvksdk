@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ktlnvksdk</string>
+    <integer name="com_vk_sdk_AppId">7046372</integer>
+</resources>
