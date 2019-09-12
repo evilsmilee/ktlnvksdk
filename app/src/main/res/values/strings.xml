@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ktlnvksdk</string>
+    <string name="screen_name_news">name news</string>
     <integer name="com_vk_sdk_AppId">7046372</integer>
 </resources>
