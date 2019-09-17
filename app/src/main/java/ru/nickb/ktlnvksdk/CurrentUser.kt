@@ -10,6 +10,7 @@ object CurrentUser {
             null
         } else VKAccessToken.currentToken().accessToken
 
+
     val id: String?
         get() {
             return if (VKAccessToken.currentToken() != null) {

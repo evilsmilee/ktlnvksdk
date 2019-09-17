@@ -1,18 +1,22 @@
 package ru.nickb.ktlnvksdk.ui.activity
 
+import android.app.Application
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import com.arellomobile.mvp.MvpAppCompatActivity
 import kotlinx.android.synthetic.main.toolbar_layout.*
+import ru.nickb.ktlnvksdk.MyApplication
 import ru.nickb.ktlnvksdk.R
 import ru.nickb.ktlnvksdk.common.MyFragmentManager
 import ru.nickb.ktlnvksdk.ui.fragment.BaseFragment
+import javax.inject.Inject
 
 
 abstract class BaseActivity: MvpAppCompatActivity() {
 
+    @Inject
     lateinit var myFragmentManager: MyFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
@@ -21,6 +25,7 @@ abstract class BaseActivity: MvpAppCompatActivity() {
         setSupportActionBar(toolbar)
         val parent = findViewById<FrameLayout>(R.id.main_wrapper)
         layoutInflater.inflate(getMainContentLayout(), parent)
+        MyApplication.sApplicationComponent.inject(this)
     }
 
     fun fragmentOnScreen(baseFragment: BaseFragment) {

@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import ru.nickb.ktlnvksdk.CurrentUser
+import ru.nickb.ktlnvksdk.MyApplication
 import ru.nickb.ktlnvksdk.R
 import ru.nickb.ktlnvksdk.const.ApiConstants
 import ru.nickb.ktlnvksdk.mvp.presenter.MainPresenter
@@ -26,7 +27,7 @@ class MainActivity : BaseActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPresenter.checkAuth()
-
+        MyApplication.sApplicationComponent.inject(this)
     }
 
     override fun getMainContentLayout(): Int {
@@ -39,7 +40,7 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun signedIn() {
         Toast.makeText(this, "Current User id + ${CurrentUser.id}", Toast.LENGTH_LONG).show()
-      
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

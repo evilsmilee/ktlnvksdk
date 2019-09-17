@@ -1,0 +1,23 @@
+package ru.nickb.ktlnvksdk.di.component
+
+import dagger.Component
+import ru.nickb.ktlnvksdk.di.module.ApplicationModule
+import ru.nickb.ktlnvksdk.di.module.ManagerModule
+import ru.nickb.ktlnvksdk.di.module.RestModule
+import ru.nickb.ktlnvksdk.ui.activity.BaseActivity
+import ru.nickb.ktlnvksdk.ui.activity.MainActivity
+import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFrament
+import javax.inject.Singleton
+
+@Singleton
+@Component(modules = [ApplicationModule::class, ManagerModule::class, RestModule::class])
+interface ApplicationComponent {
+
+    fun inject(activity: BaseActivity)
+
+    fun inject(activity: MainActivity)
+
+    fun inject(fragment: NewsFeedFrament)
+}
+
+
