@@ -2,12 +2,12 @@ package ru.nickb.ktlnvksdk.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.vk.sdk.api.VKError
 import com.vk.sdk.VKAccessToken
 import com.vk.sdk.VKCallback
 import com.vk.sdk.VKSdk
 import android.widget.Toast
-import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import ru.nickb.ktlnvksdk.CurrentUser
 import ru.nickb.ktlnvksdk.MyApplication
@@ -15,7 +15,7 @@ import ru.nickb.ktlnvksdk.R
 import ru.nickb.ktlnvksdk.const.ApiConstants
 import ru.nickb.ktlnvksdk.mvp.presenter.MainPresenter
 import ru.nickb.ktlnvksdk.mvp.view.MainView
-import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFrament
+import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
 
 
 class MainActivity : BaseActivity(), MainView {
@@ -26,21 +26,22 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter.checkAuth()
         MyApplication.sApplicationComponent.inject(this)
+        mPresenter.checkAuth()
+        Log.i("Okay", "step2")
+
     }
 
-    override fun getMainContentLayout(): Int {
-        return R.layout.activity_main
-    }
+
 
     override fun startSignIn() {
         VKSdk.login(this@MainActivity, ApiConstants.DEFAULT_LOGIN_SCOPE)
     }
 
     override fun signedIn() {
+        Log.i("Okay", "step3")
         Toast.makeText(this, "Current User id + ${CurrentUser.id}", Toast.LENGTH_LONG).show()
-
+        setContent(fragment = NewsFeedFragment())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -63,4 +64,7 @@ class MainActivity : BaseActivity(), MainView {
         }
     }
 
+    override fun getMainContentLayout(): Int {
+        return R.layout.activity_main
+    }
 }

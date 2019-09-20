@@ -7,14 +7,12 @@ class RestClient {
     private val VK_BASE_URL = "https://api.vk.com/method/"
 
 
-    private lateinit var  mRetrofit: Retrofit
 
-    fun RestClient() {
-        mRetrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(VK_BASE_URL)
-            .build()
-    }
+    private val  mRetrofit =  Retrofit.Builder().
+        addConverterFactory(GsonConverterFactory.create())
+    .baseUrl(VK_BASE_URL)
+    .build()
+
 
     fun <S> createService(serviceClass: Class<S>): S {
         return mRetrofit.create(serviceClass)

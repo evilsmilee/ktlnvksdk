@@ -9,14 +9,16 @@ import java.util.*
 
 open class  MyFragmentManager {
 
+
     var fragmentStack: Stack<BaseFragment> = Stack()
-        private set
+
 
     private var mCurrentFragment: BaseFragment? = null
 
 
- open fun setFragment(activity: BaseActivity?, fragment: BaseFragment, @IdRes containerId: Int) {
-        if (activity != null && !activity.isFinishing && !isAlreadyContains(fragment)) {
+
+ fun setFragment(activity: BaseActivity?, fragment: BaseFragment, @IdRes containerId: Int) {
+     if (activity != null && !activity.isFinishing && !isAlreadyContains(fragment)) {
             val fragmentTransaction = createAddTransaction(activity, fragment, false)
             fragmentTransaction.replace(containerId, fragment)
             commitAddTransaction(activity, fragment, fragmentTransaction, false)
@@ -37,7 +39,7 @@ open class  MyFragmentManager {
     }
 
     fun removeFragment(activity: BaseActivity, fragment: BaseFragment?): Boolean {
-        val canRemove = fragment != null && fragmentStack.size > EMPTY_FRAGMENT_STACK_SIZE
+        val canRemove = fragment != null && fragmentStack.size > Companion.EMPTY_FRAGMENT_STACK_SIZE
 
         if (canRemove) {
             val transaction = activity.supportFragmentManager.beginTransaction()
@@ -79,7 +81,7 @@ open class  MyFragmentManager {
 
             fragmentStack.add(fragment)
 
-            commitTransaction(activity, transaction!!)
+            commitTransaction(activity, transaction)
 
         }
     }
@@ -87,18 +89,18 @@ open class  MyFragmentManager {
     private fun commitTransaction(activity: BaseActivity, transaction: FragmentTransaction) {
         transaction.commit()
 
-        activity.fragmentOnScreen(mCurrentFragment!!)
+        mCurrentFragment?.let { activity.fragmentOnScreen(it) }
     }
 
-    fun isAlreadyContains(fragment: BaseFragment?): Boolean {
+    private fun isAlreadyContains(fragment: BaseFragment?): Boolean {
         return if (fragment == null) {
             false
-        } else mCurrentFragment != null && mCurrentFragment!!.javaClass.name == fragment.javaClass.name
+        } else mCurrentFragment?.javaClass?.name == fragment.javaClass.name
 
     }
 
     companion object {
-        private val EMPTY_FRAGMENT_STACK_SIZE = 1
+        const val  EMPTY_FRAGMENT_STACK_SIZE: Int = 1
     }
 
 

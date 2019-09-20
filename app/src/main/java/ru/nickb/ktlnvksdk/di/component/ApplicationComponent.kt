@@ -6,7 +6,7 @@ import ru.nickb.ktlnvksdk.di.module.ManagerModule
 import ru.nickb.ktlnvksdk.di.module.RestModule
 import ru.nickb.ktlnvksdk.ui.activity.BaseActivity
 import ru.nickb.ktlnvksdk.ui.activity.MainActivity
-import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFrament
+import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -17,7 +17,7 @@ interface ApplicationComponent {
 
     fun inject(activity: MainActivity)
 
-    fun inject(fragment: NewsFeedFrament)
+    fun inject(fragment: NewsFeedFragment)
 }
 
 

@@ -9,7 +9,9 @@ import ru.nickb.ktlnvksdk.rest.api.WallApi
 @Module
 class RestModule {
 
-    private lateinit var mRestClient: RestClient
+
+
+    private val mRestClient = RestClient()
 
     @Provides
     @Singleton

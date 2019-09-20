@@ -1,5 +1,7 @@
 package ru.nickb.ktlnvksdk.rest.model.response
 
 
-data class BaseItemResponse<T>(var count: Int,
-                               var items: List<T>)
+class BaseItemResponse<T> {
+    var count: Int = 0
+    var items: List<T> = ArrayList()
+}
