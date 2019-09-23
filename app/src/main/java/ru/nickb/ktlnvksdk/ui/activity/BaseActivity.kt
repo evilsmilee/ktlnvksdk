@@ -1,7 +1,6 @@
 package ru.nickb.ktlnvksdk.ui.activity
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
@@ -9,7 +8,7 @@ import com.arellomobile.mvp.MvpAppCompatActivity
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import ru.nickb.ktlnvksdk.MyApplication
 import ru.nickb.ktlnvksdk.R
-import ru.nickb.ktlnvksdk.common.MyFragmentManager
+import ru.nickb.ktlnvksdk.common.manager.MyFragmentManager
 import ru.nickb.ktlnvksdk.ui.fragment.BaseFragment
 import javax.inject.Inject
 

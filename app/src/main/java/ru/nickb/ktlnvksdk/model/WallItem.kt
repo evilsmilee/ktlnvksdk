@@ -15,4 +15,6 @@ data class WallItem(
     ) val comments: Comments, @SerializedName("likes") val likes: Likes, @SerializedName("reposts") val reposts: Reposts, @SerializedName(
         "views"
     ) val views: Views
+
+
 )

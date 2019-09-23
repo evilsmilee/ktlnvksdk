@@ -1,4 +1,4 @@
-package ru.nickb.ktlnvksdk.common
+package ru.nickb.ktlnvksdk.common.manager
 
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentTransaction
@@ -39,7 +39,7 @@ open class  MyFragmentManager {
     }
 
     fun removeFragment(activity: BaseActivity, fragment: BaseFragment?): Boolean {
-        val canRemove = fragment != null && fragmentStack.size > Companion.EMPTY_FRAGMENT_STACK_SIZE
+        val canRemove = fragment != null && fragmentStack.size > EMPTY_FRAGMENT_STACK_SIZE
 
         if (canRemove) {
             val transaction = activity.supportFragmentManager.beginTransaction()

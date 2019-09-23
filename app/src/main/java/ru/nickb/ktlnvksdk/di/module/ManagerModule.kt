@@ -2,7 +2,7 @@ package ru.nickb.ktlnvksdk.di.module
 
 import dagger.Module
 import dagger.Provides
-import ru.nickb.ktlnvksdk.common.MyFragmentManager
+import ru.nickb.ktlnvksdk.common.manager.MyFragmentManager
 import javax.inject.Singleton
 
 

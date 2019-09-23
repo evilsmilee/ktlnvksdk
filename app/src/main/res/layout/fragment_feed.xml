@@ -5,4 +5,13 @@
     android:background="@color/colorDefaultWhite"
     android:fitsSystemWindows="true">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
 </RelativeLayout>
