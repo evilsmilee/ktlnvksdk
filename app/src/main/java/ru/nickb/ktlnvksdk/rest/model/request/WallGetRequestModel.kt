@@ -2,32 +2,37 @@ package ru.nickb.ktlnvksdk.rest.model.request
 
 import com.google.gson.annotations.SerializedName
 import com.vk.sdk.api.VKApiConst
-import ru.nickb.ktlnvksdk.const.ApiConstants
+import ru.nickb.ktlnvksdk.consts.ApiConstants
 
-class WallGetRequestModel: BaseRequestModel {
-
-
+class WallGetRequestModel : BaseRequestModel {
     @SerializedName(VKApiConst.OWNER_ID)
-    val ownerId = Int
+    var ownerId: Int = 0
+
 
     @SerializedName(VKApiConst.COUNT)
-    val count: Int = ApiConstants.DEFAULT_COUNT
+    var count = ApiConstants.DEFAULT_COUNT
 
     @SerializedName(VKApiConst.OFFSET)
-    val offset: Int = 0
+    var offset = 0
 
     @SerializedName(VKApiConst.EXTENDED)
-    val extended: Int = 1
+    var extended = 1
 
-    constructor(ownerId: Int, count: Int, offset: Int)
+    constructor(ownerId: Int) {
+        this.ownerId = ownerId
+    }
 
-    constructor(ownerId: Int)
+    constructor(ownerId: Int, count: Int, offset: Int) {
+        this.ownerId = ownerId
+        this.count = count
+        this.offset = offset
+    }
 
 
     override fun onMapCreate(map: MutableMap<String, String>) {
-        map[VKApiConst.OWNER_ID] = ownerId.toString()
-        map[VKApiConst.COUNT] = count.toString()
-        map[VKApiConst.OFFSET] = offset.toString()
-        map[VKApiConst.EXTENDED] = extended.toString()
+        map.put(VKApiConst.OWNER_ID, ownerId.toString())
+        map.put(VKApiConst.COUNT, count.toString())
+        map.put(VKApiConst.OFFSET, offset.toString())
+        map.put(VKApiConst.EXTENDED, extended.toString())
     }
 }

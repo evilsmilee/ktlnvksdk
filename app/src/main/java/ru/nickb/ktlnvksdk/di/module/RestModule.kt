@@ -3,8 +3,9 @@ package ru.nickb.ktlnvksdk.di.module
 import dagger.Module
 import dagger.Provides
 import ru.nickb.ktlnvksdk.rest.RestClient
-import javax.inject.Singleton
 import ru.nickb.ktlnvksdk.rest.api.WallApi
+
+import javax.inject.Singleton
 
 @Module
 class RestModule {

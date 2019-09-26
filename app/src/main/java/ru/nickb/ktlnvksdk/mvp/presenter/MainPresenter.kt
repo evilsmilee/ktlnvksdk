@@ -10,7 +10,7 @@ import ru.nickb.ktlnvksdk.mvp.view.MainView
 class MainPresenter: MvpPresenter<MainView>() {
 
     fun checkAuth() {
-        if(!CurrentUser.isAuthorized) {
+        if(!CurrentUser.isAuthorized()) {
             viewState.startSignIn()
         } else {
             viewState.signedIn()

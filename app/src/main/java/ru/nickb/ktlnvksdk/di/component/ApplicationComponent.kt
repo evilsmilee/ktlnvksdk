@@ -18,6 +18,9 @@ interface ApplicationComponent {
     fun inject(activity: MainActivity)
 
     fun inject(fragment: NewsFeedFragment)
-}
+
+
+    }
+
 
 

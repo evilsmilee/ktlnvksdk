@@ -9,28 +9,24 @@ import ru.nickb.ktlnvksdk.ui.holder.BaseViewHolder
 
 abstract class BaseViewModel {
 
-    abstract fun getType(): LayoutTypes
+    abstract val type: LayoutTypes
 
-    fun createViewHolder(parent: ViewGroup): BaseViewHolder<BaseViewModel> {
-            return onCreateViewHolder(LayoutInflater.from(parent.context).inflate(getType().getValue(), parent, false))
+    fun createViewHolder(parent: ViewGroup): BaseViewHolder<out BaseViewModel> {
+        return onCreateViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(type.value, parent, false)
+        )
     }
 
-    protected abstract fun onCreateViewHolder(view: View): BaseViewHolder<BaseViewModel>
+    protected abstract fun onCreateViewHolder(view: View): BaseViewHolder<*>
 
-    enum class LayoutTypes {
+
+    enum class LayoutTypes(
+        @get:LayoutRes
+        val value: Int
+    ) {
         NewsFeedItemHeader(R.layout.item_news_header),
         NewsFeedItemBody(R.layout.item_news_body),
-        NewsFeedItemFooter(R.layout.item_news_footer);
-
-        var id: Int = 0
-
-        constructor(resId: Int) {
-            id = resId
-        }
-
-        @LayoutRes
-        fun getValue(): Int {
-            return id
-        }
+        NewsFeedItemFooter(R.layout.item_news_footer)
     }
 }

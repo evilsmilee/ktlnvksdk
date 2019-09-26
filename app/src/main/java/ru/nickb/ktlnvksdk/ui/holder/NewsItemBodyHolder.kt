@@ -2,23 +2,19 @@ package ru.nickb.ktlnvksdk.ui.holder
 
 import android.view.View
 import android.widget.TextView
-import kotlinx.android.synthetic.main.item_news_body.view.*
 import ru.nickb.ktlnvksdk.R
-import ru.nickb.ktlnvksdk.model.view.NewsFeedItemBody
+import ru.nickb.ktlnvksdk.model.view.NewsItemBodyViewModel
 
-class NewsItemBodyHolder: BaseViewHolder<NewsFeedItemBody> {
+class NewsItemBodyHolder(itemView: View) : BaseViewHolder<NewsItemBodyViewModel>(itemView) {
 
-    private val mText: TextView
+    var tvText: TextView = itemView.findViewById(R.id.tv_text)
 
-    constructor(itemView: View) : super(itemView) {
-        mText = itemView.findViewById(R.id.tv_text)
-    }
 
-    override fun bindViewHolder(item: NewsFeedItemBody) {
-        mText.text = item.mText
+    override fun bindViewHolder(item: NewsItemBodyViewModel) {
+        tvText.text = item.text
     }
 
     override fun unbindViewHolder() {
-        mText.text = null
+        tvText.text = null
     }
 }

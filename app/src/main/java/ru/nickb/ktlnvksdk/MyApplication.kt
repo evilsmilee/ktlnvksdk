@@ -6,7 +6,6 @@ import ru.nickb.ktlnvksdk.di.component.ApplicationComponent
 import ru.nickb.ktlnvksdk.di.component.DaggerApplicationComponent
 import ru.nickb.ktlnvksdk.di.module.ApplicationModule
 
-
 class MyApplication: Application() {
 
     companion object {
@@ -17,8 +16,10 @@ class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        VKSdk.initialize(applicationContext)
+
         initComponent()
+
+        VKSdk.initialize(this)
     }
 
     private fun initComponent() {
@@ -26,6 +27,7 @@ class MyApplication: Application() {
             .applicationModule(ApplicationModule(this)).build()
     }
 
-
-
+    fun getApplicationComponent(): ApplicationComponent? {
+        return sApplicationComponent
+    }
 }

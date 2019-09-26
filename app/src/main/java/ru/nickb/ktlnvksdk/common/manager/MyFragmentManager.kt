@@ -6,19 +6,17 @@ import ru.nickb.ktlnvksdk.ui.activity.BaseActivity
 import ru.nickb.ktlnvksdk.ui.fragment.BaseFragment
 import java.util.*
 
+class MyFragmentManager {
 
-open class  MyFragmentManager {
+    private val EMPTY_FRAGMENT_STACK_SIZE = 1
 
-
-    var fragmentStack: Stack<BaseFragment> = Stack()
-
+    private var mFragmentStack = Stack<BaseFragment>()
 
     private var mCurrentFragment: BaseFragment? = null
 
 
-
- fun setFragment(activity: BaseActivity?, fragment: BaseFragment, @IdRes containerId: Int) {
-     if (activity != null && !activity.isFinishing && !isAlreadyContains(fragment)) {
+    fun setFragment(activity: BaseActivity?, fragment: BaseFragment, @IdRes containerId: Int) {
+        if (activity != null && !activity.isFinishing && !isAlreadyContains(fragment)) {
             val fragmentTransaction = createAddTransaction(activity, fragment, false)
             fragmentTransaction.replace(containerId, fragment)
             commitAddTransaction(activity, fragment, fragmentTransaction, false)
@@ -39,13 +37,13 @@ open class  MyFragmentManager {
     }
 
     fun removeFragment(activity: BaseActivity, fragment: BaseFragment?): Boolean {
-        val canRemove = fragment != null && fragmentStack.size > EMPTY_FRAGMENT_STACK_SIZE
+        val canRemove = fragment != null && mFragmentStack.size > EMPTY_FRAGMENT_STACK_SIZE
 
         if (canRemove) {
             val transaction = activity.supportFragmentManager.beginTransaction()
 
-            fragmentStack.pop()
-            mCurrentFragment = fragmentStack.lastElement()
+            mFragmentStack.pop()
+            mCurrentFragment = mFragmentStack.lastElement()
 
             transaction.remove(fragment!!)
             commitTransaction(activity, transaction)
@@ -76,10 +74,10 @@ open class  MyFragmentManager {
             mCurrentFragment = fragment
 
             if (!addToBackStack) {
-                fragmentStack = Stack()
+                mFragmentStack = Stack()
             }
 
-            fragmentStack.add(fragment)
+            mFragmentStack.add(fragment)
 
             commitTransaction(activity, transaction)
 
@@ -89,19 +87,19 @@ open class  MyFragmentManager {
     private fun commitTransaction(activity: BaseActivity, transaction: FragmentTransaction) {
         transaction.commit()
 
-        mCurrentFragment?.let { activity.fragmentOnScreen(it) }
+        activity.fragmentOnScreen(mCurrentFragment!!)
     }
 
     private fun isAlreadyContains(fragment: BaseFragment?): Boolean {
         return if (fragment == null) {
             false
-        } else mCurrentFragment?.javaClass?.name == fragment.javaClass.name
+        } else mCurrentFragment != null && mCurrentFragment!!.javaClass.name == fragment.javaClass.name
 
     }
 
-    companion object {
-        const val  EMPTY_FRAGMENT_STACK_SIZE: Int = 1
-    }
 
+    fun getFragmentStack(): Stack<BaseFragment> {
+        return mFragmentStack
+    }
 
 }

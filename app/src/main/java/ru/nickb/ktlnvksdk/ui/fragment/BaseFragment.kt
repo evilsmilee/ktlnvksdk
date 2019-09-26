@@ -11,15 +11,15 @@ import com.arellomobile.mvp.MvpAppCompatFragment
 
 abstract class BaseFragment: MvpAppCompatFragment() {
 
-
-
     @LayoutRes
     protected abstract fun getMainContentLayout(): Int
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+
         return inflater.inflate(getMainContentLayout(), container, false)
     }
 
@@ -29,6 +29,5 @@ abstract class BaseFragment: MvpAppCompatFragment() {
 
     @StringRes
     abstract fun onCreateToolbarTitle(): Int
-
 
 }

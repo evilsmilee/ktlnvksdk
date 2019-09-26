@@ -1,22 +1,51 @@
 package ru.nickb.ktlnvksdk.model
+
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+class Photo {
 
+    @SerializedName("id")
+    @Expose
+    var id: Int? = null
+    @SerializedName("album_id")
+    @Expose
+    var albumId: Int? = null
+    @SerializedName("owner_id")
+    @Expose
+    var ownerId: Int? = null
+    @SerializedName("user_id")
+    @Expose
+    var userId: Int? = null
+    @SerializedName("photo_75")
+    @Expose
+    var photo75: String? = null
+    @SerializedName("photo_130")
+    @Expose
+    var photo130: String? = null
+    @SerializedName("photo_604")
+    @Expose
+    var photo604: String? = null
+    @SerializedName("photo_807")
+    @Expose
+    var photo807: String? = null
+    @SerializedName("photo_1280")
+    @Expose
+    var photo1280: String? = null
+    @SerializedName("width")
+    @Expose
+    var width: Int? = null
+    @SerializedName("height")
+    @Expose
+    var height: Int? = null
+    @SerializedName("text")
+    @Expose
+    var text: String? = null
+    @SerializedName("date")
+    @Expose
+    var date: Int? = null
+    @SerializedName("access_key")
+    @Expose
+    var accessKey: String? = null
 
-data class Photo (
-
-	@SerializedName("id") val id : Int,
-	@SerializedName("album_id") val album_id : Int,
-	@SerializedName("owner_id") val owner_id : Int,
-	@SerializedName("user_id") val user_id : Int,
-	@SerializedName("photo_75") val photo_75 : String,
-	@SerializedName("photo_130") val photo_130 : String,
-	@SerializedName("photo_604") val photo_604 : String,
-	@SerializedName("photo_807") val photo_807 : String,
-	@SerializedName("photo_1280") val photo_1280 : String,
-	@SerializedName("width") val width : Int,
-	@SerializedName("height") val height : Int,
-	@SerializedName("text") val text : String,
-	@SerializedName("date") val date : Int,
-	@SerializedName("access_key") val access_access_key : String
-)
+}

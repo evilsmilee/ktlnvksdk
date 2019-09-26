@@ -3,46 +3,43 @@ package ru.nickb.ktlnvksdk.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.vk.sdk.api.VKError
+import android.widget.Toast
+import com.arellomobile.mvp.presenter.InjectPresenter
 import com.vk.sdk.VKAccessToken
 import com.vk.sdk.VKCallback
 import com.vk.sdk.VKSdk
-import android.widget.Toast
-import com.arellomobile.mvp.presenter.InjectPresenter
+import com.vk.sdk.api.VKError
 import ru.nickb.ktlnvksdk.CurrentUser
 import ru.nickb.ktlnvksdk.MyApplication
 import ru.nickb.ktlnvksdk.R
-import ru.nickb.ktlnvksdk.const.ApiConstants
+import ru.nickb.ktlnvksdk.consts.ApiConstants
 import ru.nickb.ktlnvksdk.mvp.presenter.MainPresenter
 import ru.nickb.ktlnvksdk.mvp.view.MainView
 import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
 
-
-class MainActivity : BaseActivity(), MainView {
-
+class MainActivity: BaseActivity(), MainView {
 
     @InjectPresenter
     lateinit var mPresenter: MainPresenter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MyApplication.sApplicationComponent.inject(this)
-        mPresenter.checkAuth()
         Log.i("Okay", "step2")
-
+        mPresenter.checkAuth()
     }
 
-
-
     override fun startSignIn() {
-        VKSdk.login(this@MainActivity, ApiConstants.DEFAULT_LOGIN_SCOPE)
+        VKSdk.login(this, ApiConstants.DEFAULT_LOGIN_SCOPE[0])
     }
 
     override fun signedIn() {
         Log.i("Okay", "step3")
-        Toast.makeText(this, "Current User id + ${CurrentUser.id}", Toast.LENGTH_LONG).show()
-        setContent(fragment = NewsFeedFragment())
+        Toast.makeText(this, "Current user id: " + CurrentUser.getId()!!, Toast.LENGTH_LONG).show()
+        setContent(NewsFeedFragment())
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (!// Пользователь успешно авторизовался
@@ -55,9 +52,8 @@ class MainActivity : BaseActivity(), MainView {
                     override fun onResult(res: VKAccessToken) {
                         mPresenter.checkAuth()
                     }
-                    override fun onError(error: VKError) {
 
-                    }
+                    override fun onError(error: VKError) {}
                 })
         ) {
             super.onActivityResult(requestCode, resultCode, data)
@@ -67,4 +63,5 @@ class MainActivity : BaseActivity(), MainView {
     override fun getMainContentLayout(): Int {
         return R.layout.activity_main
     }
+
 }
