@@ -5,7 +5,11 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 
-class WallItem {
+open class WallItem {
+
+    var senderName: String = ""
+    var senderPhoto: String = ""
+    var attachmentsString: String = ""
 
     @SerializedName("id")
     @Expose
@@ -33,11 +37,13 @@ class WallItem {
     var canPin: Int? = null
     @SerializedName("attachments")
     @Expose
-    var attachments: List<Attachment> = ArrayList()
+    var attachments: List<ApiAttachment> = ArrayList()
+
+
 
     @SerializedName("copy_history")
     @Expose
-    private val copyHistory = ArrayList<WallItem>()
+    private val copyHistory: List<WallItem> = ArrayList()
 
     @SerializedName("post_source")
     @Expose
@@ -54,5 +60,18 @@ class WallItem {
     @SerializedName("views")
     @Expose
     var views: Views? = null
+
+
+
+    fun haveSharedRepost(): Boolean {
+        return copyHistory.isNotEmpty()
+    }
+
+    fun getSharedRepost(): WallItem? {
+        if (haveSharedRepost()) {
+            return copyHistory[0]
+        }
+        return null
+    }
 
 }

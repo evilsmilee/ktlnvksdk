@@ -6,6 +6,7 @@ import ru.nickb.ktlnvksdk.di.component.ApplicationComponent
 import ru.nickb.ktlnvksdk.di.component.DaggerApplicationComponent
 import ru.nickb.ktlnvksdk.di.module.ApplicationModule
 
+
 class MyApplication: Application() {
 
     companion object {

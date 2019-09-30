@@ -7,6 +7,8 @@ import ru.nickb.ktlnvksdk.di.module.RestModule
 import ru.nickb.ktlnvksdk.ui.activity.BaseActivity
 import ru.nickb.ktlnvksdk.ui.activity.MainActivity
 import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
+import ru.nickb.ktlnvksdk.ui.holder.NewsItemBodyHolder
+import ru.nickb.ktlnvksdk.ui.holder.NewsItemFooterHolder
 import javax.inject.Singleton
 
 @Singleton
@@ -14,10 +16,12 @@ import javax.inject.Singleton
 interface ApplicationComponent {
 
     fun inject(activity: BaseActivity)
-
     fun inject(activity: MainActivity)
 
     fun inject(fragment: NewsFeedFragment)
+
+    fun inject(holder: NewsItemBodyHolder)
+    fun inject(holder: NewsItemFooterHolder)
 
 
     }

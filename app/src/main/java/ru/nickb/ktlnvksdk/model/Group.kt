@@ -3,7 +3,14 @@ package ru.nickb.ktlnvksdk.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Group {
+class Group: Owner {
+
+
+
+    override fun getId(): Int {
+        return id!!
+    }
+
 
     @SerializedName("id")
     @Expose
@@ -35,5 +42,13 @@ class Group {
     @SerializedName("photo_200")
     @Expose
     var photo200: String? = null
+
+    override fun getFullName(): String {
+        return name!!
+    }
+
+    override fun getPhoto(): String {
+        return photo100!!
+    }
 
 }

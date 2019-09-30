@@ -1,10 +1,10 @@
 package ru.nickb.ktlnvksdk.di.module
 
 import android.app.Application
-import dagger.Module
 import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
+import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
@@ -33,7 +33,7 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideGoogleFontTypeFace(context: Context): Typeface {
-        return Typeface.createFromAsset(context.assets, "MaterialIconsRegular.ttf")
+        return Typeface.createFromAsset(context.assets, "MaterialIcons-Regular.ttf")
     }
 
 

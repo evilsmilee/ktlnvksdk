@@ -139,6 +139,7 @@
         android:layout_height="1dp"
         android:layout_alignParentRight="true"
         android:layout_below="@id/cv_attach"
-        android:background="@color/colorDivider" />
+        android:background="@color/colorDivider"
+        tools:ignore="NotSibling" />
 
 </RelativeLayout>
