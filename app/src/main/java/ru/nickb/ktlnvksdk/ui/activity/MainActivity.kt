@@ -31,7 +31,7 @@ class MainActivity: BaseActivity(), MainView {
     }
 
     override fun startSignIn() {
-        VKSdk.login(this, ApiConstants.DEFAULT_LOGIN_SCOPE[0])
+        VKSdk.login(this, ApiConstants.DEFAULT_LOGIN_SCOPE)
     }
 
     override fun signedIn() {
