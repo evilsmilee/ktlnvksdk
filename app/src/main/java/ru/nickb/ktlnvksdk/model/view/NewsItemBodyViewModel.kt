@@ -5,7 +5,7 @@ import ru.nickb.ktlnvksdk.model.WallItem
 import ru.nickb.ktlnvksdk.ui.holder.NewsItemBodyHolder
 
 
-class NewsItemBodyViewModel(wallItem: WallItem) : BaseViewModel() {
+ class NewsItemBodyViewModel(wallItem: WallItem) : BaseViewModel() {
 
     var id: Int? = null
 
@@ -39,5 +39,9 @@ class NewsItemBodyViewModel(wallItem: WallItem) : BaseViewModel() {
     fun getmAttachmentString(): String? {
         return mAttachmentString
     }
+
+
+
+
 }
 

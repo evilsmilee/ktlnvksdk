@@ -30,9 +30,9 @@ class WallGetRequestModel : BaseRequestModel {
 
 
     override fun onMapCreate(map: MutableMap<String, String>) {
-        map.put(VKApiConst.OWNER_ID, ownerId.toString())
-        map.put(VKApiConst.COUNT, count.toString())
-        map.put(VKApiConst.OFFSET, offset.toString())
-        map.put(VKApiConst.EXTENDED, extended.toString())
+        map[VKApiConst.OWNER_ID] = ownerId.toString()
+        map[VKApiConst.COUNT] = count.toString()
+        map[VKApiConst.OFFSET] = offset.toString()
+        map[VKApiConst.EXTENDED] = extended.toString()
     }
 }

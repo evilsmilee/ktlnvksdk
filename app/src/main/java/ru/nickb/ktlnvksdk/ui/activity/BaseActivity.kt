@@ -1,8 +1,8 @@
 package ru.nickb.ktlnvksdk.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.FrameLayout
+import android.widget.ProgressBar
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
 import com.arellomobile.mvp.MvpAppCompatActivity
@@ -19,14 +19,17 @@ abstract class BaseActivity: MvpAppCompatActivity() {
 
     lateinit var toolbar: Toolbar
 
+    protected lateinit var mProgressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-        Log.i("Okay", "step1")
         MyApplication.sApplicationComponent.inject(this)
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        mProgressBar = findViewById(R.id.progress)
 
         val parent = findViewById<FrameLayout>(R.id.main_wrapper)
         layoutInflater.inflate(getMainContentLayout(), parent)
@@ -70,6 +73,10 @@ abstract class BaseActivity: MvpAppCompatActivity() {
 
     override fun onBackPressed() {
         removeCurrentFragment()
+    }
+
+    fun getProgressBar(): ProgressBar {
+        return mProgressBar
     }
 
 }

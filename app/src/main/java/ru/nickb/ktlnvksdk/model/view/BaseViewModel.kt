@@ -29,4 +29,8 @@ abstract class BaseViewModel {
         NewsFeedItemBody(R.layout.item_news_body),
         NewsFeedItemFooter(R.layout.item_news_footer)
     }
+
+    protected fun isItemDecorator(): Boolean{
+        return false
+    }
 }

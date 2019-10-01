@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import com.arellomobile.mvp.MvpAppCompatFragment
+import ru.nickb.ktlnvksdk.ui.activity.BaseActivity
+
+
 
 abstract class BaseFragment: MvpAppCompatFragment() {
 
@@ -29,5 +32,9 @@ abstract class BaseFragment: MvpAppCompatFragment() {
 
     @StringRes
     abstract fun onCreateToolbarTitle(): Int
+
+    fun getBaseActivity(): BaseActivity {
+        return (activity as BaseActivity?)!!
+    }
 
 }

@@ -2,7 +2,6 @@ package ru.nickb.ktlnvksdk.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.vk.sdk.VKAccessToken
@@ -23,10 +22,11 @@ class MainActivity: BaseActivity(), MainView {
     lateinit var mPresenter: MainPresenter
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MyApplication.sApplicationComponent.inject(this)
-        Log.i("Okay", "step2")
+
         mPresenter.checkAuth()
     }
 
@@ -35,7 +35,6 @@ class MainActivity: BaseActivity(), MainView {
     }
 
     override fun signedIn() {
-        Log.i("Okay", "step3")
         Toast.makeText(this, "Current user id: " + CurrentUser.getId()!!, Toast.LENGTH_LONG).show()
         setContent(NewsFeedFragment())
     }
@@ -63,5 +62,7 @@ class MainActivity: BaseActivity(), MainView {
     override fun getMainContentLayout(): Int {
         return R.layout.activity_main
     }
+
+
 
 }
