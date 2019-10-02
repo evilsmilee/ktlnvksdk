@@ -2,10 +2,10 @@ package ru.nickb.ktlnvksdk.model.attachment
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import ru.nickb.ktlnvksdk.model.Attachment
+import io.realm.RealmObject
 
 
-class Page : Attachment {
+open class Page : Attachment, RealmObject() {
 
     @SerializedName("id")
     @Expose

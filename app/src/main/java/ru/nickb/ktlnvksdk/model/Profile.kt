@@ -2,15 +2,15 @@ package ru.nickb.ktlnvksdk.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
 
 
-
-class Profile: Owner {
+open class Profile: Owner, RealmObject() {
 
 
     @SerializedName("id")
     @Expose
-    private val id: Int = 0
+    private var id: Int = 0
 
     @SerializedName("photo_50")
     @Expose

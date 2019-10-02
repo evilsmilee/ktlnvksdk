@@ -5,6 +5,8 @@ import android.content.res.Resources
 import android.graphics.Typeface
 import android.view.View
 import android.widget.TextView
+import butterknife.BindView
+import butterknife.ButterKnife
 import ru.nickb.ktlnvksdk.MyApplication
 import ru.nickb.ktlnvksdk.R
 import ru.nickb.ktlnvksdk.common.utils.Utils
@@ -15,16 +17,27 @@ import ru.nickb.ktlnvksdk.model.view.counter.RepostCounterViewModel
 import javax.inject.Inject
 
 
+
+
 class NewsItemFooterHolder(itemView: View) : BaseViewHolder<NewsItemFooterViewModel>(itemView) {
 
-    private val tvDate: TextView
+    @BindView(R.id.tv_date)
+    lateinit var tvDate: TextView
 
-    private val tvLikesCount: TextView
-    private val tvLikesIcon: TextView
-    private val tvCommentsIcon: TextView
-    private val tvCommentsCount: TextView
-    private val tvRepostIcon: TextView
-    private val tvRepostsCount: TextView
+    @BindView(R.id.tv_likes_count)
+    lateinit var tvLikesCount: TextView
+    @BindView(R.id.tv_likes_icon)
+    lateinit var tvLikesIcon: TextView
+
+    @BindView(R.id.tv_comments_icon)
+    lateinit var tvCommentIcon: TextView
+    @BindView(R.id.tv_comments_count)
+    lateinit var tvCommentsCount: TextView
+
+    @BindView(R.id.tv_reposts_icon)
+    lateinit var tvRepostIcon: TextView
+    @BindView(R.id.tv_reposts_count)
+    lateinit var tvRepostsCount: TextView
 
     @Inject
     lateinit var mGoogleFontTypeface: Typeface
@@ -33,21 +46,16 @@ class NewsItemFooterHolder(itemView: View) : BaseViewHolder<NewsItemFooterViewMo
     private val mContext: Context
 
     init {
+        ButterKnife.bind(this, itemView)
         MyApplication.sApplicationComponent.inject(this)
 
         mContext = itemView.context
         mResources = mContext.resources
 
-        tvDate = itemView.findViewById(R.id.tv_date)
-        tvLikesIcon = itemView.findViewById(R.id.tv_likes_icon)
-        tvLikesCount = itemView.findViewById(R.id.tv_likes_count)
-        tvCommentsIcon = itemView.findViewById(R.id.tv_comments_icon)
-        tvCommentsCount = itemView.findViewById(R.id.tv_comments_count)
-        tvRepostIcon = itemView.findViewById(R.id.tv_reposts_icon)
-        tvRepostsCount = itemView.findViewById(R.id.tv_reposts_count)
+
 
         tvLikesIcon.typeface = mGoogleFontTypeface
-        tvCommentsIcon.typeface = mGoogleFontTypeface
+        tvCommentIcon.typeface = mGoogleFontTypeface
         tvRepostIcon.typeface = mGoogleFontTypeface
 
     }
@@ -72,7 +80,7 @@ class NewsItemFooterHolder(itemView: View) : BaseViewHolder<NewsItemFooterViewMo
     private fun bindComments(comments: CommentCounterViewModel) {
         tvCommentsCount.text = comments.count.toString()
         tvCommentsCount.setTextColor(mResources.getColor(comments.textColor))
-        tvCommentsIcon.setTextColor(mResources.getColor(comments.iconColor))
+        tvCommentIcon.setTextColor(mResources.getColor(comments.iconColor))
 
     }
 

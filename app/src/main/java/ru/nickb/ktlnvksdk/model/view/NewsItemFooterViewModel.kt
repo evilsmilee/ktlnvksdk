@@ -11,7 +11,6 @@ import ru.nickb.ktlnvksdk.ui.holder.NewsItemFooterHolder
 
 class NewsItemFooterViewModel(wallItem: WallItem) : BaseViewModel() {
 
-
     var id: Int? = null
     var ownerId: Int = 0
     var dateLong: Long = 0
@@ -38,8 +37,8 @@ class NewsItemFooterViewModel(wallItem: WallItem) : BaseViewModel() {
        return NewsItemFooterHolder(view)
     }
 
-
-    fun setMreposts(mreposts: RepostCounterViewModel) {
-        this.reposts = mreposts
+    override fun isItemDecorator(): Boolean {
+        return true
     }
+
 }

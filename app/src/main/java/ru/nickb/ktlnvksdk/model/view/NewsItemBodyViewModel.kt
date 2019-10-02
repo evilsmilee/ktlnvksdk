@@ -41,7 +41,9 @@ import ru.nickb.ktlnvksdk.ui.holder.NewsItemBodyHolder
     }
 
 
-
+     override fun isItemDecorator(): Boolean {
+         return true
+     }
 
 }
 

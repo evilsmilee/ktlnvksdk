@@ -1,6 +1,7 @@
 package ru.nickb.ktlnvksdk.di.component
 
 import dagger.Component
+import ru.nickb.ktlnvksdk.common.manager.NetworkManager
 import ru.nickb.ktlnvksdk.di.module.ApplicationModule
 import ru.nickb.ktlnvksdk.di.module.ManagerModule
 import ru.nickb.ktlnvksdk.di.module.RestModule
@@ -25,6 +26,8 @@ interface ApplicationComponent {
     fun inject(holder: NewsItemFooterHolder)
 
     fun inject(presenter: NewsFeedPresenter)
+
+    fun inject(networkManager: NetworkManager)
 
     }
 

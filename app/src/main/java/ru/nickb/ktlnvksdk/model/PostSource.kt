@@ -2,8 +2,9 @@ package ru.nickb.ktlnvksdk.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmObject
 
-class PostSource {
+open class PostSource: RealmObject() {
 
     @SerializedName("type")
     @Expose

@@ -6,8 +6,18 @@ import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.realm.Realm
+import io.realm.RealmObject
+import ru.nickb.ktlnvksdk.common.manager.NetworkManager
 import ru.nickb.ktlnvksdk.model.view.BaseViewModel
 import ru.nickb.ktlnvksdk.mvp.view.BaseFeedView
+import javax.inject.Inject
+
+
+
+
+
+
 
 
 abstract class BaseFeedPresenter<V : BaseFeedView> : MvpPresenter<V>() {
@@ -17,6 +27,8 @@ abstract class BaseFeedPresenter<V : BaseFeedView> : MvpPresenter<V>() {
         private const val NEXT_PAGE_SIZE: Int = 5
     }
 
+    @Inject
+    lateinit var mNetworkManager: NetworkManager
 
     private var mIsInLoading: Boolean = false
 
@@ -27,13 +39,23 @@ abstract class BaseFeedPresenter<V : BaseFeedView> : MvpPresenter<V>() {
         }
         mIsInLoading = true
 
-        onCreateLoadDataObservable(count, offset)
+        mNetworkManager.getNetworkObservable()
+            .flatMap<Any> { aBoolean ->
+                if (!aBoolean && offset > 0) {
+                    return@flatMap Observable.empty<Any>()
+                }
+
+                if (aBoolean)
+                    onCreateLoadDataObservable(count, offset)
+                else
+                    onCreateRestoreDataObservable()
+            }
             .toList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { onLoadingStart(progressType) }
+            .doOnSubscribe { disposable -> onLoadingStart(progressType) }
             .doFinally { onLoadingFinish(progressType) }
-            .subscribe({ repositories -> onLoadingSuccess(progressType, repositories) }, { error ->
+            .subscribe({ repositories -> onLoadingSuccess(progressType, repositories as MutableList<BaseViewModel>) }, { error ->
                 error.printStackTrace()
                 onLoadingFailed(error)
             })
@@ -94,6 +116,13 @@ abstract class BaseFeedPresenter<V : BaseFeedView> : MvpPresenter<V>() {
             else -> Log.i("error", "error")
 
         }
+    }
+
+    abstract fun onCreateRestoreDataObservable(): Observable<BaseViewModel>
+
+    fun saveToDb(item: RealmObject) {
+        val realm: Realm = Realm.getDefaultInstance()
+        realm.executeTransaction { realm1 -> realm1.copyToRealmOrUpdate(item) }
     }
 
 }

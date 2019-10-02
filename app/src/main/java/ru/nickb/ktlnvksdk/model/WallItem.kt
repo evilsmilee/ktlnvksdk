@@ -2,10 +2,13 @@ package ru.nickb.ktlnvksdk.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import io.realm.RealmList
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
+import ru.nickb.ktlnvksdk.model.attachment.ApiAttachment
 
 
-open class WallItem {
+open class WallItem: RealmObject() {
 
     var senderName: String = ""
     var senderPhoto: String = ""
@@ -13,6 +16,7 @@ open class WallItem {
 
     @SerializedName("id")
     @Expose
+    @PrimaryKey
     var id: Int? = null
     @SerializedName("from_id")
     @Expose
@@ -37,13 +41,13 @@ open class WallItem {
     var canPin: Int? = null
     @SerializedName("attachments")
     @Expose
-    var attachments: List<ApiAttachment> = ArrayList()
+    var attachments: RealmList<ApiAttachment> = RealmList()
 
 
 
     @SerializedName("copy_history")
     @Expose
-    private val copyHistory: List<WallItem> = ArrayList()
+    private var copyHistory: RealmList<WallItem> = RealmList()
 
     @SerializedName("post_source")
     @Expose

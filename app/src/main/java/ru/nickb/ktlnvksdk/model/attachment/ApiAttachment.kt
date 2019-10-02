@@ -1,20 +1,20 @@
-package ru.nickb.ktlnvksdk.model
+package ru.nickb.ktlnvksdk.model.attachment
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 import com.vk.sdk.api.model.VKAttachments
-import ru.nickb.ktlnvksdk.model.attachment.*
+import io.realm.RealmObject
 
 
-class ApiAttachment {
+open class ApiAttachment: RealmObject() {
 
     @SerializedName("type")
     @Expose
     private var type: String? = null
     @SerializedName("photo")
     @Expose
-    private var photo: ru.nickb.ktlnvksdk.model.attachment.Photo? = null
+    private var photo: Photo? = null
 
     private var audio: Audio? = null
     private var video: Video? = null
@@ -82,11 +82,11 @@ class ApiAttachment {
         this.type = type
     }
 
-    fun getPhoto(): ru.nickb.ktlnvksdk.model.attachment.Photo? {
+    fun getPhoto(): Photo? {
         return photo
     }
 
-    fun setPhoto(photo: ru.nickb.ktlnvksdk.model.attachment.Photo?) {
+    fun setPhoto(photo: Photo?) {
         this.photo = photo
     }
 

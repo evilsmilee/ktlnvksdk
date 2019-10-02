@@ -3,10 +3,10 @@ package ru.nickb.ktlnvksdk.model.attachment
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.vk.sdk.api.model.VKAttachments
-import ru.nickb.ktlnvksdk.model.Attachment
+import io.realm.RealmObject
 
 
-class Link : Attachment {
+open class Link : Attachment, RealmObject() {
 
 
     @SerializedName("url")

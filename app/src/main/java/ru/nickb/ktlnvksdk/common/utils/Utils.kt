@@ -2,7 +2,7 @@ package ru.nickb.ktlnvksdk.common.utils
 
 import android.content.Context
 import com.vk.sdk.api.model.VKAttachments
-import ru.nickb.ktlnvksdk.model.ApiAttachment
+import ru.nickb.ktlnvksdk.model.attachment.ApiAttachment
 import java.text.SimpleDateFormat
 import java.util.*
 

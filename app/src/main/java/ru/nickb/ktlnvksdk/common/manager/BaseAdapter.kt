@@ -7,6 +7,8 @@ import ru.nickb.ktlnvksdk.model.view.BaseViewModel
 import ru.nickb.ktlnvksdk.ui.holder.BaseViewHolder
 import java.util.*
 
+
+
 class BaseAdapter: RecyclerView.Adapter<BaseViewHolder<BaseViewModel>>() {
 
     private val list = ArrayList<BaseViewModel>()
@@ -69,6 +71,16 @@ class BaseAdapter: RecyclerView.Adapter<BaseViewHolder<BaseViewModel>>() {
 
     fun getItem(position: Int): BaseViewModel {
         return list[position]
+    }
+
+    fun getRealItemCount(): Int {
+       var count = 0
+        for (i in 0 until itemCount) {
+            if (!getItem(i).isItemDecorator()) {
+                count += 1
+            }
+        }
+        return count
     }
 
 }

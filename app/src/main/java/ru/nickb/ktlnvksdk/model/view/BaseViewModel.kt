@@ -7,6 +7,8 @@ import androidx.annotation.LayoutRes
 import ru.nickb.ktlnvksdk.R
 import ru.nickb.ktlnvksdk.ui.holder.BaseViewHolder
 
+
+
 abstract class BaseViewModel {
 
     abstract val type: LayoutTypes
@@ -16,6 +18,10 @@ abstract class BaseViewModel {
             LayoutInflater.from(parent.context)
                 .inflate(type.value, parent, false)
         )
+    }
+
+    open  fun isItemDecorator(): Boolean {
+        return false
     }
 
     protected abstract fun onCreateViewHolder(view: View): BaseViewHolder<*>
@@ -30,7 +36,5 @@ abstract class BaseViewModel {
         NewsFeedItemFooter(R.layout.item_news_footer)
     }
 
-    protected fun isItemDecorator(): Boolean{
-        return false
-    }
+
 }

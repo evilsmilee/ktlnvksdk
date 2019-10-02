@@ -5,6 +5,8 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.arellomobile.mvp.MvpAppCompatActivity
 import ru.nickb.ktlnvksdk.MyApplication
 import ru.nickb.ktlnvksdk.R
@@ -17,19 +19,20 @@ abstract class BaseActivity: MvpAppCompatActivity() {
     @Inject
     lateinit var myFragmentManager: MyFragmentManager
 
+    @BindView(R.id.toolbar)
     lateinit var toolbar: Toolbar
 
-    protected lateinit var mProgressBar: ProgressBar
+    @BindView(R.id.progress)
+    lateinit var mProgressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
+        ButterKnife.bind(this)
         MyApplication.sApplicationComponent.inject(this)
 
-        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        mProgressBar = findViewById(R.id.progress)
 
         val parent = findViewById<FrameLayout>(R.id.main_wrapper)
         layoutInflater.inflate(getMainContentLayout(), parent)

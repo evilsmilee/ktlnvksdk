@@ -1,4 +1,4 @@
-package ru.nickb.ktlnvksdk.model
+package ru.nickb.ktlnvksdk.model.attachment
 
 import com.vk.sdk.api.model.Identifiable
 

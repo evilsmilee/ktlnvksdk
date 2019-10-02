@@ -5,23 +5,30 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import butterknife.BindView
+import butterknife.ButterKnife
 import ru.nickb.ktlnvksdk.R
 import ru.nickb.ktlnvksdk.common.manager.BaseAdapter
+import ru.nickb.ktlnvksdk.common.manager.MyLinearLayoutManager
 import ru.nickb.ktlnvksdk.model.view.BaseViewModel
 import ru.nickb.ktlnvksdk.mvp.presenter.BaseFeedPresenter
 import ru.nickb.ktlnvksdk.mvp.view.BaseFeedView
 
 
+
+
+
 abstract class BaseFeedFragment : BaseFragment(), BaseFeedView {
 
-
+    @BindView(R.id.rv_list)
     lateinit var mRecyclerView: RecyclerView
 
     lateinit var mAdapter: BaseAdapter
 
+    @BindView(R.id.swipe_refresh)
     lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     lateinit var mProgressBar: ProgressBar
 
@@ -32,6 +39,7 @@ abstract class BaseFeedFragment : BaseFragment(), BaseFeedView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ButterKnife.bind(this, view)
         setUpSwipeToRefreshLayout(view)
         setUpRecyclerView(view)
         setUpAdapter(mRecyclerView)
@@ -40,8 +48,18 @@ abstract class BaseFeedFragment : BaseFragment(), BaseFeedView {
     }
 
     private fun setUpRecyclerView(rootView: View) {
-        mRecyclerView = rootView.findViewById(R.id.rv_list)
-        mRecyclerView.layoutManager = LinearLayoutManager(context)
+        val mLinearLayoutManager = MyLinearLayoutManager(activity!!)
+        mRecyclerView.layoutManager = mLinearLayoutManager
+        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if(mLinearLayoutManager.isOnNextPagePosition){
+                    mBaseFeedPresenter.loadNext(mAdapter.getRealItemCount())
+                }
+            }
+
+        })
+
+        (mRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
     protected fun setUpAdapter(rv: RecyclerView) {
@@ -58,7 +76,6 @@ abstract class BaseFeedFragment : BaseFragment(), BaseFeedView {
     }
 
     private fun setUpSwipeToRefreshLayout(view: View) {
-        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh)
         mSwipeRefreshLayout.setOnRefreshListener{onCreateFeedPresenter().loadRefresh()}
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
         mProgressBar = getBaseActivity().getProgressBar()
