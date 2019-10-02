@@ -29,7 +29,7 @@ class WallGetRequestModel : BaseRequestModel {
     }
 
 
-    override fun onMapCreate(map: MutableMap<String, String>) {
+    override fun onMapCreate(map: MutableMap<String?, String?>) {
         map[VKApiConst.OWNER_ID] = ownerId.toString()
         map[VKApiConst.COUNT] = count.toString()
         map[VKApiConst.OFFSET] = offset.toString()

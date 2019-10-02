@@ -5,6 +5,7 @@ open class ApiConstants {
        const val DEFAULT_LOGIN_SCOPE: String = ""
        const val  DEFAULT_VERSION: Double = 5.67
        const val DEFAULT_COUNT: Int = 10
+       const val DEFAULT_USERS_FIELDS = "photo_100"
     }
 
 

@@ -16,8 +16,8 @@ abstract class BaseRequestModel {
     var accessToken = CurrentUser.getAccessToken()
 
 
-    fun toMap(): Map<String, String> {
-        val map = HashMap<String, String>()
+    fun toMap(): MutableMap<String?, String?> {
+        val map = HashMap<String?, String?>()
         map[VKApiConst.VERSION] = version.toString()
         if (accessToken != null) {
             map[VKApiConst.ACCESS_TOKEN] = accessToken!!
@@ -28,5 +28,5 @@ abstract class BaseRequestModel {
         return map
     }
 
-    abstract fun onMapCreate(map: MutableMap<String, String>)
+    abstract fun onMapCreate(map: MutableMap<String?, String?>)
 }
