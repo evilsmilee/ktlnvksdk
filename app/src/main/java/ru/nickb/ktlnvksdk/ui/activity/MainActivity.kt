@@ -2,14 +2,20 @@ package ru.nickb.ktlnvksdk.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.mikepenz.google_material_typeface_library.GoogleMaterial
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
+import com.mikepenz.materialdrawer.model.SectionDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import com.vk.sdk.VKAccessToken
 import com.vk.sdk.VKCallback
 import com.vk.sdk.VKSdk
@@ -18,11 +24,17 @@ import ru.nickb.ktlnvksdk.CurrentUser
 import ru.nickb.ktlnvksdk.MyApplication
 import ru.nickb.ktlnvksdk.R
 import ru.nickb.ktlnvksdk.consts.ApiConstants
+import ru.nickb.ktlnvksdk.model.Profile
 import ru.nickb.ktlnvksdk.mvp.presenter.MainPresenter
 import ru.nickb.ktlnvksdk.mvp.view.MainView
+import ru.nickb.ktlnvksdk.ui.fragment.BaseFragment
 import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
 
+
+
 class MainActivity: BaseActivity(), MainView {
+
+
 
     @InjectPresenter
     lateinit var mPresenter: MainPresenter
@@ -48,6 +60,34 @@ class MainActivity: BaseActivity(), MainView {
         setUpDrawer()
     }
 
+    override fun showFragmentFromDrawer(baseFragment: BaseFragment) {
+        setContent(baseFragment)
+    }
+
+    override fun showCurrentUser(profile: Profile) {
+        val profileDrawerItems: MutableList<IProfile<*>>
+        profileDrawerItems = ArrayList()
+        profileDrawerItems.add(ProfileDrawerItem().withName(profile.getFullName()).withEmail(VKAccessToken.currentToken().email)
+            .withIcon(profile.getDisplayProfilePhoto()!!))
+        profileDrawerItems.add(ProfileSettingDrawerItem().withName("Logout")
+            .withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener{
+                override fun onItemClick(
+                    view: View?,
+                    position: Int,
+                    drawerItem: IDrawerItem<*>
+                ): Boolean {
+                    mAccountHeader.removeProfile(0)
+                    mAccountHeader.removeProfile(0)
+                    VKSdk.logout()
+                    return false
+                }
+
+            }))
+
+        mAccountHeader.profiles = profileDrawerItems
+
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (!// Пользователь успешно авторизовался
@@ -69,7 +109,7 @@ class MainActivity: BaseActivity(), MainView {
     }
 
     override fun getMainContentLayout(): Int {
-        return R.layout.activity_main
+        return ru.nickb.ktlnvksdk.R.layout.activity_main
     }
 
     fun setUpDrawer() {
@@ -92,6 +132,18 @@ class MainActivity: BaseActivity(), MainView {
             .withTranslucentStatusBar(true)
             .withActionBarDrawerToggle(true)
             .withAccountHeader(mAccountHeader)
+            .addDrawerItems(item1, item2, item3, SectionDrawerItem().withName("Группа"), item4, item5, item6, item7)
+            .withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener {
+                override fun onItemClick(
+                    view: View?,
+                    position: Int,
+                    drawerItem: IDrawerItem<*>
+                ): Boolean {
+                    mPresenter.drawerItemClick(drawerItem.identifier.toInt())
+                    return false
+                }
+            }
+            )
             .build()
     }
 

@@ -3,6 +3,7 @@ package ru.nickb.ktlnvksdk.di.module
 import dagger.Module
 import dagger.Provides
 import ru.nickb.ktlnvksdk.rest.RestClient
+import ru.nickb.ktlnvksdk.rest.api.GroupsApi
 import ru.nickb.ktlnvksdk.rest.api.UsersApi
 import ru.nickb.ktlnvksdk.rest.api.WallApi
 
@@ -31,5 +32,11 @@ class RestModule {
     @Singleton
     fun provideUsersApi(): UsersApi {
         return mRestClient.createService(UsersApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGroupsApi(): GroupsApi {
+        return mRestClient.createService(GroupsApi::class.java)
     }
 }

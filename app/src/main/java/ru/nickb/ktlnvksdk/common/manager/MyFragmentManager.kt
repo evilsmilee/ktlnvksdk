@@ -90,7 +90,7 @@ class MyFragmentManager {
         activity.fragmentOnScreen(mCurrentFragment!!)
     }
 
-    private fun isAlreadyContains(fragment: BaseFragment?): Boolean {
+     fun isAlreadyContains(fragment: BaseFragment?): Boolean {
         return if (fragment == null) {
             false
         } else mCurrentFragment != null && mCurrentFragment!!.javaClass.name == fragment.javaClass.name

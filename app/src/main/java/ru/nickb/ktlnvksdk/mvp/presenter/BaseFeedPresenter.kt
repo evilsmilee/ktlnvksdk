@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmObject
@@ -12,12 +14,6 @@ import ru.nickb.ktlnvksdk.common.manager.NetworkManager
 import ru.nickb.ktlnvksdk.model.view.BaseViewModel
 import ru.nickb.ktlnvksdk.mvp.view.BaseFeedView
 import javax.inject.Inject
-
-
-
-
-
-
 
 
 abstract class BaseFeedPresenter<V : BaseFeedView> : MvpPresenter<V>() {
@@ -39,26 +35,64 @@ abstract class BaseFeedPresenter<V : BaseFeedView> : MvpPresenter<V>() {
         }
         mIsInLoading = true
 
-        mNetworkManager.getNetworkObservable()
-            .flatMap<Any> { aBoolean ->
-                if (!aBoolean && offset > 0) {
-                    return@flatMap Observable.empty<Any>()
+     /*   mNetworkManager.getNetworkObservable()
+            .flatMap(object: Function<Boolean, ObservableSource<out BaseViewModel>> {
+                @Throws(Exception::class)
+                override fun apply(aBoolean: Boolean): ObservableSource<out BaseViewModel> {
+                   if(aBoolean && offset > 0)  {
+                       return Observable.empty()
+                   }
+                  return when(aBoolean)  {
+                      true -> onCreateLoadDataObservable(count, offset)
+                      else -> onCreateRestoreDataObservable()
+                  }
+
+                }})
+                .toList()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { onLoadingStart(progressType) }
+            .doFinally { onLoadingFinish(progressType) }
+            .subscribe(object : Consumer<MutableList<BaseViewModel>>{
+                override fun accept(repositories: MutableList<BaseViewModel>) {
+                    onLoadingSuccess(progressType, repositories)
                 }
 
-                if (aBoolean)
-                    onCreateLoadDataObservable(count, offset)
-                else
-                    onCreateRestoreDataObservable()
-            }
+            }, Consumer<Throwable> { error ->
+                error?.printStackTrace()
+                onLoadingFailed(error!!)
+            })*/
+
+
+        mNetworkManager.getNetworkObservable()
+            .flatMap(object : Function<Boolean, ObservableSource<out BaseViewModel>> {
+                @Throws(Exception::class)
+                override fun apply(aBoolean: Boolean): ObservableSource<out BaseViewModel> {
+                    if ((!aBoolean) && offset > 0) {
+                        return Observable.empty()
+                    }
+                    return if (aBoolean)
+                       onCreateLoadDataObservable(count, offset)
+                    else
+                     onCreateRestoreDataObservable()
+                }
+                }
+              )
             .toList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { disposable -> onLoadingStart(progressType) }
+            .doOnSubscribe { disposable -> onLoadStart(progressType) }
             .doFinally { onLoadingFinish(progressType) }
-            .subscribe({ repositories -> onLoadingSuccess(progressType, repositories as MutableList<BaseViewModel>) }, { error ->
-                error.printStackTrace()
-                onLoadingFailed(error)
-            })
+            .subscribe(
+                { repositories ->
+                   onLoadingSuccess(progressType, repositories
+                    )
+                },
+                { error ->
+                    error.printStackTrace()
+                   onLoadingFailed(error)
+                })
+
     }
 
     abstract fun onCreateLoadDataObservable(count: Int, offset: Int): Observable<BaseViewModel>
@@ -75,7 +109,7 @@ abstract class BaseFeedPresenter<V : BaseFeedView> : MvpPresenter<V>() {
         loadData(ProgressType.Refreshing, 0, START_PAGE_SIZE)
     }
 
-    private fun onLoadingStart(progressType: ProgressType) {
+    private fun onLoadStart(progressType: ProgressType) {
         showProgress(progressType)
     }
 

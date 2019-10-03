@@ -10,17 +10,18 @@ import io.realm.Realm
 import io.realm.RealmObject
 import ru.nickb.ktlnvksdk.CurrentUser
 import ru.nickb.ktlnvksdk.MyApplication
+import ru.nickb.ktlnvksdk.common.manager.MyFragmentManager
 import ru.nickb.ktlnvksdk.common.manager.NetworkManager
 import ru.nickb.ktlnvksdk.model.Profile
 import ru.nickb.ktlnvksdk.mvp.view.MainView
 import ru.nickb.ktlnvksdk.rest.api.UsersApi
 import ru.nickb.ktlnvksdk.rest.model.request.UsersGetRequestModel
+import ru.nickb.ktlnvksdk.ui.fragment.BaseFragment
+import ru.nickb.ktlnvksdk.ui.fragment.MembersFragment
+import ru.nickb.ktlnvksdk.ui.fragment.MyPostsFragment
+import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
+import java.util.concurrent.Callable
 import javax.inject.Inject
-
-
-
-
-
 
 
 
@@ -32,6 +33,9 @@ class MainPresenter: MvpPresenter<MainView>() {
 
     @Inject
     lateinit var mNetworkManager: NetworkManager
+
+    @Inject
+    lateinit var myFragmentManager: MyFragmentManager
 
     init {
         MyApplication.sApplicationComponent.inject(this)
@@ -66,6 +70,20 @@ class MainPresenter: MvpPresenter<MainView>() {
                 { error -> error.printStackTrace() })
     }
 
+    fun drawerItemClick(id: Int) {
+        var fragment: BaseFragment? = null
+        when(id) {
+            1 -> fragment = NewsFeedFragment()
+            2 -> fragment = MyPostsFragment()
+            4 -> fragment = MembersFragment()
+        }
+
+        if(fragment != null && !myFragmentManager.isAlreadyContains(fragment)) {
+            viewState.showFragmentFromDrawer(fragment)
+        }
+
+    }
+
     fun getProfileFromNetwork(): Observable<Profile> {
         return mUserApi[UsersGetRequestModel(CurrentUser.getId()).toMap()]
             .flatMap<Profile> { listFull -> Observable.fromIterable(listFull.response!!) }
@@ -81,8 +99,8 @@ class MainPresenter: MvpPresenter<MainView>() {
         realm.executeTransaction { realm1 -> realm1.copyToRealmOrUpdate(item) }
     }
 
-    fun getListFromRealmCallable(): () -> Profile? {
-        return {
+    fun getListFromRealmCallable(): Callable<Profile> {
+        return Callable<Profile> {
             val realm = Realm.getDefaultInstance()
             val realmResults = realm.where(Profile::class.java)
                 .equalTo("id", Integer.parseInt(CurrentUser.getId()!!))

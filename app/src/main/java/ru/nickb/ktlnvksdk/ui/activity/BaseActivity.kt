@@ -25,12 +25,12 @@ abstract class BaseActivity: MvpAppCompatActivity() {
     @BindView(R.id.progress)
     lateinit var mProgressBar: ProgressBar
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
         ButterKnife.bind(this)
         MyApplication.sApplicationComponent.inject(this)
-
         setSupportActionBar(toolbar)
 
 

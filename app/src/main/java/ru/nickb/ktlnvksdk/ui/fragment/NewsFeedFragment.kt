@@ -12,7 +12,7 @@ import ru.nickb.ktlnvksdk.rest.api.WallApi
 import javax.inject.Inject
 
 
-class NewsFeedFragment : BaseFeedFragment() {
+open class NewsFeedFragment : BaseFeedFragment() {
 
 
 

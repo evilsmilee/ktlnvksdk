@@ -33,7 +33,8 @@ abstract class BaseViewModel {
     ) {
         NewsFeedItemHeader(R.layout.item_news_header),
         NewsFeedItemBody(R.layout.item_news_body),
-        NewsFeedItemFooter(R.layout.item_news_footer)
+        NewsFeedItemFooter(R.layout.item_news_footer),
+        Member(R.layout.item_member)
     }
 
 

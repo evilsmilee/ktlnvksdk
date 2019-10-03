@@ -17,19 +17,17 @@ import javax.inject.Inject
 class NewsItemBodyHolder(itemView: View) : BaseViewHolder<NewsItemBodyViewModel>(itemView) {
 
     @BindView(R.id.tv_text)
-    var tvText: TextView
+    lateinit var tvText: TextView
 
     @BindView(R.id.tv_attachments)
-    var tvAttachments: TextView
+    lateinit var tvAttachments: TextView
 
     @Inject
-     lateinit var mFontGoogle: Typeface
+    lateinit var mFontGoogle: Typeface
 
     init {
         MyApplication.sApplicationComponent.inject(this)
         ButterKnife.bind(this, itemView)
-        tvText = itemView.findViewById(R.id.tv_text) as TextView
-        tvAttachments = itemView.findViewById(R.id.tv_attachments) as TextView
 
         tvAttachments.typeface = mFontGoogle
     }

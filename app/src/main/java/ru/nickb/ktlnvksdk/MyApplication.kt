@@ -1,6 +1,12 @@
 package ru.nickb.ktlnvksdk
 
 import android.app.Application
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
+import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import com.vk.sdk.VKSdk
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -29,6 +35,11 @@ class MyApplication: Application() {
             .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(realmConfiguration)
+        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
+            override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable) {
+                Glide.with(imageView.context).load(uri).into(imageView)
+            }
+        })
     }
 
     private fun initComponent() {
