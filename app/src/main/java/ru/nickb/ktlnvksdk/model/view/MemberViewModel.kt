@@ -22,7 +22,7 @@ class MemberViewModel : BaseViewModel {
 
     var fullName: String? = null
 
-    override val type: BaseViewModel.LayoutTypes
+    override val type: LayoutTypes
         get() = LayoutTypes.Member
 
     constructor() {

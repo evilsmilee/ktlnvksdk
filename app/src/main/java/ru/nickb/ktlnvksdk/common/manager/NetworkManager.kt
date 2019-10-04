@@ -32,7 +32,6 @@ class NetworkManager {
 
     fun isVkReachableCallable(): Callable<Boolean> {
         return object : Callable<Boolean> {
-            @Throws(Exception::class)
             override fun call(): Boolean? {
                 try {
                     if (!isOnline()) {

@@ -2,6 +2,7 @@ package ru.nickb.ktlnvksdk.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -31,7 +32,6 @@ import ru.nickb.ktlnvksdk.ui.fragment.BaseFragment
 import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
 
 
-
 class MainActivity: BaseActivity(), MainView {
 
 
@@ -43,73 +43,12 @@ class MainActivity: BaseActivity(), MainView {
 
     lateinit var mAccountHeader: AccountHeader
 
+    private lateinit var profileDraw: IProfile<*>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MyApplication.sApplicationComponent.inject(this)
-
         mPresenter.checkAuth()
-    }
-
-    override fun startSignIn() {
-        VKSdk.login(this, ApiConstants.DEFAULT_LOGIN_SCOPE)
-    }
-
-    override fun signedIn() {
-        Toast.makeText(this, "Current user id: " + CurrentUser.getId()!!, Toast.LENGTH_LONG).show()
-        setContent(NewsFeedFragment())
-        setUpDrawer()
-    }
-
-    override fun showFragmentFromDrawer(baseFragment: BaseFragment) {
-        setContent(baseFragment)
-    }
-
-    override fun showCurrentUser(profile: Profile) {
-        val profileDrawerItems: MutableList<IProfile<*>>
-        profileDrawerItems = ArrayList()
-        profileDrawerItems.add(ProfileDrawerItem().withName(profile.getFullName()).withEmail(VKAccessToken.currentToken().email)
-            .withIcon(profile.getDisplayProfilePhoto()!!))
-        profileDrawerItems.add(ProfileSettingDrawerItem().withName("Logout")
-            .withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener{
-                override fun onItemClick(
-                    view: View?,
-                    position: Int,
-                    drawerItem: IDrawerItem<*>
-                ): Boolean {
-                    mAccountHeader.removeProfile(0)
-                    mAccountHeader.removeProfile(0)
-                    VKSdk.logout()
-                    return false
-                }
-
-            }))
-
-        mAccountHeader.profiles = profileDrawerItems
-
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (!// Пользователь успешно авторизовался
-            // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
-            VKSdk.onActivityResult(
-                requestCode,
-                resultCode,
-                data,
-                object : VKCallback<VKAccessToken> {
-                    override fun onResult(res: VKAccessToken) {
-                        mPresenter.checkAuth()
-                    }
-
-                    override fun onError(error: VKError) {}
-                })
-        ) {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
-    override fun getMainContentLayout(): Int {
-        return ru.nickb.ktlnvksdk.R.layout.activity_main
     }
 
     fun setUpDrawer() {
@@ -120,8 +59,6 @@ class MainActivity: BaseActivity(), MainView {
         val item5: PrimaryDrawerItem = PrimaryDrawerItem().withIdentifier(5).withName(R.string.screen_name_topics).withIcon(GoogleMaterial.Icon.gmd_record_voice_over)
         val item6: PrimaryDrawerItem = PrimaryDrawerItem().withIdentifier(6).withName(R.string.screen_name_info).withIcon(GoogleMaterial.Icon.gmd_info)
         val item7: PrimaryDrawerItem = PrimaryDrawerItem().withIdentifier(7).withName(R.string.screen_name_rules).withIcon(GoogleMaterial.Icon.gmd_assessment)
-
-
 
         mAccountHeader = AccountHeaderBuilder()
             .withActivity(this)
@@ -146,5 +83,70 @@ class MainActivity: BaseActivity(), MainView {
             )
             .build()
     }
+
+    override fun startSignIn() {
+        VKSdk.login(this, ApiConstants.DEFAULT_LOGIN_SCOPE)
+    }
+
+    override fun signedIn() {
+        Toast.makeText(this, "Current user id: " + CurrentUser.getId()!!, Toast.LENGTH_LONG).show()
+        setContent(NewsFeedFragment())
+        setUpDrawer()
+    }
+
+    override fun showFragmentFromDrawer(baseFragment: BaseFragment) {
+        setContent(baseFragment)
+    }
+
+    override fun showCurrentUser(profile: Profile) {
+        Log.i("profileinfo", profile.getLastName())
+        profileDraw =  ProfileDrawerItem().withName(profile.getFullName()).withEmail(VKAccessToken.currentToken().email)
+            .withIcon(profile.getDisplayProfilePhoto()!!)
+        profileDraw = ProfileSettingDrawerItem().withName("Logout")
+            .withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener{
+                override fun onItemClick(
+                    view: View?,
+                    position: Int,
+                    drawerItem: IDrawerItem<*>
+                ): Boolean {
+                    mAccountHeader.removeProfile(0)
+                    mAccountHeader.removeProfile(0)
+                    VKSdk.logout()
+                    return false
+                }
+
+            })
+
+        val profiles = mAccountHeader.profiles
+
+
+        mAccountHeader.addProfiles(profileDraw)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (!// Пользователь успешно авторизовался
+            // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
+            VKSdk.onActivityResult(
+                requestCode,
+                resultCode,
+                data,
+                object : VKCallback<VKAccessToken> {
+                    override fun onResult(res: VKAccessToken) {
+                        mPresenter.checkAuth()
+                    }
+
+                    override fun onError(error: VKError) {}
+                })
+        ) {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    override fun getMainContentLayout(): Int {
+        return R.layout.activity_main
+    }
+
+
 
 }

@@ -119,7 +119,7 @@ abstract class BaseFeedPresenter<V : BaseFeedView> : MvpPresenter<V>() {
     }
 
     private fun onLoadingFailed(throwable: Throwable) {
-        viewState.showError(throwable.localizedMessage)
+        viewState.showError(throwable.message!!)
     }
 
     private fun onLoadingSuccess(progressType: ProgressType, items: MutableList<BaseViewModel>) {

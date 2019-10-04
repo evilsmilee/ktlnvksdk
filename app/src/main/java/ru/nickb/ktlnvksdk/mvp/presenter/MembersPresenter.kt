@@ -1,5 +1,6 @@
 package ru.nickb.ktlnvksdk.mvp.presenter
 
+import com.arellomobile.mvp.InjectViewState
 import io.reactivex.Observable
 import io.realm.Realm
 import io.realm.Sort
@@ -16,6 +17,7 @@ import ru.nickb.ktlnvksdk.rest.model.response.Full
 import java.util.concurrent.Callable
 import javax.inject.Inject
 
+@InjectViewState
 class MembersPresenter: BaseFeedPresenter<BaseFeedView>() {
 
     @Inject

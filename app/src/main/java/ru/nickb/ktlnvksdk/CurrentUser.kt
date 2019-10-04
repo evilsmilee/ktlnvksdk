@@ -4,18 +4,19 @@ import com.vk.sdk.VKAccessToken
 import com.vk.sdk.VKSdk
 
 object CurrentUser {
-    fun getAccessToken(): String? {
-        return if (VKAccessToken.currentToken() == null) {
-            null
-        } else VKAccessToken.currentToken().accessToken
 
+    fun getAccessToken(): String? {
+        if(VKAccessToken.currentToken() === null) {
+            return null
+        }
+        return VKAccessToken.currentToken().accessToken
     }
 
     fun getId(): String? {
-        return if (VKAccessToken.currentToken() != null) {
-            VKAccessToken.currentToken().userId
-        } else null
-
+       if(VKAccessToken.currentToken() != null) {
+           return VKAccessToken.currentToken().userId
+       }
+        return null
     }
 
     fun isAuthorized(): Boolean {

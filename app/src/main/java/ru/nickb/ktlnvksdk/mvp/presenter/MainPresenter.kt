@@ -1,9 +1,13 @@
 package ru.nickb.ktlnvksdk.mvp.presenter
 
 import android.annotation.SuppressLint
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
@@ -16,11 +20,13 @@ import ru.nickb.ktlnvksdk.model.Profile
 import ru.nickb.ktlnvksdk.mvp.view.MainView
 import ru.nickb.ktlnvksdk.rest.api.UsersApi
 import ru.nickb.ktlnvksdk.rest.model.request.UsersGetRequestModel
+import ru.nickb.ktlnvksdk.rest.model.response.Full
 import ru.nickb.ktlnvksdk.ui.fragment.BaseFragment
 import ru.nickb.ktlnvksdk.ui.fragment.MembersFragment
 import ru.nickb.ktlnvksdk.ui.fragment.MyPostsFragment
 import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
 import java.util.concurrent.Callable
+import java.util.function.Consumer
 import javax.inject.Inject
 
 
@@ -53,22 +59,28 @@ class MainPresenter: MvpPresenter<MainView>() {
     @SuppressLint("CheckResult")
     private fun getCurrentUser() {
         mNetworkManager.getNetworkObservable()
-            .flatMap<Profile> { aBoolean ->
+            .flatMap { aBoolean ->
                 if (!CurrentUser.isAuthorized()) {
                     viewState.startSignIn()
                 }
 
-                if (aBoolean)
-                    getProfileFromNetwork()
-                else
-                    getProfileFromDb()
+                if (!aBoolean) { getProfileFromDb()}
+
+
+                else  {
+                    Log.i("profileinfo1", "profileinfo1")
+                    getProfileFromNetwork()}
+
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { profile -> viewState.showCurrentUser(profile) },
+                { profile -> viewState.showCurrentUser(profile)
+                Log.i("profileinfo1", profile.getLastName())},
                 { error -> error.printStackTrace() })
     }
+
+
 
     fun drawerItemClick(id: Int) {
         var fragment: BaseFragment? = null
@@ -85,9 +97,23 @@ class MainPresenter: MvpPresenter<MainView>() {
     }
 
     fun getProfileFromNetwork(): Observable<Profile> {
+        Log.i("profileinfo1", CurrentUser.getId())
         return mUserApi[UsersGetRequestModel(CurrentUser.getId()).toMap()]
-            .flatMap<Profile> { listFull -> Observable.fromIterable(listFull.response!!) }
-            .doOnNext(this::saveToDb)
+            .flatMap(object : io.reactivex.functions.Function<Full<List<Profile>>,  ObservableSource<out Profile>> {
+                override fun apply(t: Full<List<Profile>>): ObservableSource<out Profile> {
+                    Log.i("profileinfo1", t.response!![0].getLastName())
+                    return Observable.fromIterable(t.response)
+                }
+
+
+            })
+            .doOnNext(@RequiresApi(Build.VERSION_CODES.N)
+            object : Consumer<Profile>, io.reactivex.functions.Consumer<Profile> {
+                override fun accept(t: Profile) {
+                   saveToDb(t)
+                }
+
+            })
     }
 
     private fun getProfileFromDb(): Observable<Profile> {

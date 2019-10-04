@@ -8,18 +8,18 @@ import kotlin.math.abs
 
 class ItemWithSenderResponse<T> : BaseItemResponse<T>() {
 
-    private val profiles: List<Profile> =  ArrayList()
-    private val groups: List<Group> = ArrayList()
+    private val profiles: MutableList<Profile> =  ArrayList()
+    private val groups: MutableList<Group> = ArrayList()
 
-    private fun getProfiles(): List<Profile> {
+    private fun getProfiles(): MutableList<Profile> {
         return profiles
     }
 
-    private fun getGroups(): List<Group> {
+    private fun getGroups(): MutableList<Group> {
         return groups
     }
 
-    private fun getAllSenders(): List<Owner> {
+    private fun getAllSenders(): MutableList<Owner> {
         val all: MutableList<Owner> = ArrayList()
         all.addAll(getProfiles())
         all.addAll(getGroups())

@@ -24,11 +24,11 @@ open class Profile: Owner, RealmObject() {
 
     @SerializedName("first_name")
     @Expose
-    private var firstName: String? = null
+    private var firstName: String? = ""
 
     @SerializedName("last_name")
     @Expose
-    private var lastName: String? = null
+    private var lastName: String? = ""
 
     @SerializedName("sex")
     @Expose
@@ -36,7 +36,7 @@ open class Profile: Owner, RealmObject() {
 
     @SerializedName("screen_name")
     @Expose
-    private var screenName: String? = null
+    private var screenName: String? = ""
 
 
     @SerializedName("online")
