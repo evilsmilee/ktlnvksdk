@@ -1,14 +1,13 @@
 package ru.nickb.ktlnvksdk.mvp.presenter
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmObject
@@ -26,7 +25,6 @@ import ru.nickb.ktlnvksdk.ui.fragment.MembersFragment
 import ru.nickb.ktlnvksdk.ui.fragment.MyPostsFragment
 import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
 import java.util.concurrent.Callable
-import java.util.function.Consumer
 import javax.inject.Inject
 
 
@@ -74,9 +72,7 @@ class MainPresenter: MvpPresenter<MainView>() {
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { profile -> viewState.showCurrentUser(profile)
-                Log.i("profileinfo1", profile.getLastName())},
+            .subscribe({ profile -> viewState.showCurrentUser(profile)  },
                 { error -> error.printStackTrace() })
     }
 
@@ -96,25 +92,37 @@ class MainPresenter: MvpPresenter<MainView>() {
 
     }
 
+
     fun getProfileFromNetwork(): Observable<Profile> {
         Log.i("profileinfo1", CurrentUser.getId())
-        return mUserApi[UsersGetRequestModel(CurrentUser.getId()).toMap()]
-            .flatMap(object : io.reactivex.functions.Function<Full<List<Profile>>,  ObservableSource<out Profile>> {
+        return mUserApi.get(UsersGetRequestModel(CurrentUser.getId()).toMap())
+            .flatMap(object : Function<Full<List<Profile>>, ObservableSource<out Profile>> {
                 override fun apply(t: Full<List<Profile>>): ObservableSource<out Profile> {
-                    Log.i("profileinfo1", t.response!![0].getLastName())
+                    Log.i("profileinfo1", t.response?.get(0)?.getLastName())
                     return Observable.fromIterable(t.response)
                 }
 
-
             })
-            .doOnNext(@RequiresApi(Build.VERSION_CODES.N)
-            object : Consumer<Profile>, io.reactivex.functions.Consumer<Profile> {
-                override fun accept(t: Profile) {
-                   saveToDb(t)
+            .doOnNext{item -> saveToDb(item)}
+    }
+
+/*    fun getProfileFromNetwork(): Observable<Profile> {
+        Log.i("profileinfo1", CurrentUser.getId())
+        return mUserApi[UsersGetRequestModel(CurrentUser.getId()).toMap()]
+            .flatMap(object : Function<Full<List<Profile>>, ObservableSource<Profile>> {
+                override fun apply(t: Full<List<Profile>>): ObservableSource< Profile>  {
+                    Log.i("prfoile1", t.response!![0].getLastName())
+                    return Observable.fromIterable(t.response)
                 }
 
             })
-    }
+            .doOnNext{item -> saveToDb(item)}
+
+    }*/
+
+
+
+
 
     private fun getProfileFromDb(): Observable<Profile> {
         return Observable.fromCallable(getListFromRealmCallable())

@@ -2,7 +2,6 @@ package ru.nickb.ktlnvksdk.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -13,7 +12,6 @@ import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.SectionDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
@@ -30,6 +28,7 @@ import ru.nickb.ktlnvksdk.mvp.presenter.MainPresenter
 import ru.nickb.ktlnvksdk.mvp.view.MainView
 import ru.nickb.ktlnvksdk.ui.fragment.BaseFragment
 import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
+import java.util.*
 
 
 class MainActivity: BaseActivity(), MainView {
@@ -99,28 +98,30 @@ class MainActivity: BaseActivity(), MainView {
     }
 
     override fun showCurrentUser(profile: Profile) {
-        Log.i("profileinfo", profile.getLastName())
-        profileDraw =  ProfileDrawerItem().withName(profile.getFullName()).withEmail(VKAccessToken.currentToken().email)
-            .withIcon(profile.getDisplayProfilePhoto()!!)
-        profileDraw = ProfileSettingDrawerItem().withName("Logout")
-            .withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener{
-                override fun onItemClick(
-                    view: View?,
-                    position: Int,
-                    drawerItem: IDrawerItem<*>
-                ): Boolean {
-                    mAccountHeader.removeProfile(0)
-                    mAccountHeader.removeProfile(0)
-                    VKSdk.logout()
-                    return false
-                }
+        val profileDrawerItems = ArrayList<IProfile<*>>()
+        profileDrawerItems.add(
+            ProfileDrawerItem().withName(profile.getFullName())
+                .withEmail(VKAccessToken.currentToken().email)
+                .withIcon(profile.getDisplayProfilePhoto()!!)
+        )
 
-            })
+        profileDrawerItems.add(
+            ProfileDrawerItem().withName("Logout")
+                .withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener {
+                    override fun onItemClick(
+                        view: View?,
+                        position: Int,
+                        drawerItem: IDrawerItem<*>
+                    ): Boolean {
+                        mAccountHeader.removeProfile(0)
+                        mAccountHeader.removeProfile(0)
+                        VKSdk.logout()
+                        return false
+                    }
+                })
+        )
 
-        val profiles = mAccountHeader.profiles
-
-
-        mAccountHeader.addProfiles(profileDraw)
+        mAccountHeader.profiles = profileDrawerItems
     }
 
 

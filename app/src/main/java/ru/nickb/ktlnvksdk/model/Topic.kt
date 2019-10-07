@@ -1,0 +1,31 @@
+package ru.nickb.ktlnvksdk.model
+
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+import com.vk.sdk.api.model.Identifiable
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
+
+
+class Topic : RealmObject(), Identifiable {
+
+    override fun getId(): Int {
+       return id!!
+    }
+
+    @PrimaryKey
+    @SerializedName("id")
+    @Expose
+    var id: Int? = 0
+
+    @SerializedName("title")
+    @Expose
+    var title: String = null!!
+
+
+    @SerializedName("comments")
+    @Expose
+    var comments: Int = 0
+
+    var groupId: Int = 0
+}

@@ -12,11 +12,11 @@ object CurrentUser {
         return VKAccessToken.currentToken().accessToken
     }
 
-    fun getId(): String? {
+    fun getId(): String {
        if(VKAccessToken.currentToken() != null) {
            return VKAccessToken.currentToken().userId
        }
-        return null
+        return null!!
     }
 
     fun isAuthorized(): Boolean {

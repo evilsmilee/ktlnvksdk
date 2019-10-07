@@ -4,17 +4,15 @@ import com.google.gson.annotations.SerializedName
 import com.vk.sdk.api.VKApiConst
 import ru.nickb.ktlnvksdk.consts.ApiConstants
 
-class UsersGetRequestModel(userId: String?): BaseRequestModel(){
-
-    @SerializedName(VKApiConst.USER_IDS)
-    val userId: String? = null
+class UsersGetRequestModel(@field:SerializedName(VKApiConst.USER_IDS) var userIds: String) : BaseRequestModel() {
 
     @SerializedName(VKApiConst.FIELDS)
-    val fields = ApiConstants.DEFAULT_USERS_FIELDS
-
+    var fields = ApiConstants.DEFAULT_USER_FIELDS
 
     override fun onMapCreate(map: MutableMap<String?, String?>) {
-        map[VKApiConst.USER_ID] = userId
+
+        map[VKApiConst.USER_ID] = userIds
         map[VKApiConst.FIELDS] = fields
+
     }
 }
