@@ -19,7 +19,6 @@ class GroupsGetMembersRequestModel : BaseRequestModel {
     @SerializedName(VKApiConst.FIELDS)
     var fields = ApiConstants.DEFAULT_MEMBER_FIELDS
 
-
     constructor(groupId: Int) {
         this.groupId = Math.abs(groupId)
     }
@@ -30,7 +29,6 @@ class GroupsGetMembersRequestModel : BaseRequestModel {
         this.offset = offset
     }
 
-
     fun getGroupId(): Int {
         return groupId
     }
@@ -39,11 +37,11 @@ class GroupsGetMembersRequestModel : BaseRequestModel {
         this.groupId = Math.abs(groupId)
     }
 
-
     override fun onMapCreate(map: MutableMap<String?, String?>) {
         map[VKApiConst.GROUP_ID] = getGroupId().toString()
         map[VKApiConst.COUNT] = count.toString()
         map[VKApiConst.OFFSET] = offset.toString()
         map[VKApiConst.FIELDS] = fields
+
     }
 }

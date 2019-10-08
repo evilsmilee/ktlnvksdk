@@ -7,6 +7,7 @@ open class ApiMethods {
         const val USERS_GET = "users.get"
         const val GROUPS_GET_MEMBERS = "groups.getMembers"
         const val BOARD_GET_TOPICS = "board.getTopics"
+        const val GROUPS_GET_BY_ID = "groups.getById"
     }
 
 

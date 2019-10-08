@@ -16,10 +16,6 @@ import ru.nickb.ktlnvksdk.model.view.NewsItemHeaderViewModel
 class NewsItemHeaderHolder(itemView: View) : BaseViewHolder<NewsItemHeaderViewModel>(itemView) {
 
 
-   /* private  var civProfileImage: CircleImageView = itemView.findViewById(R.id.civ_profile_image)
-    private var tvName: TextView = itemView.findViewById(R.id.tv_profile_name)
-    private var ivRepostedIcon: ImageView = itemView.findViewById(R.id.iv_reposted_icon)
-    private var tvRepostedProfileName: TextView = itemView.findViewById(R.id.tv_reposted_profile_name)*/
 
     @BindView(R.id.civ_profile_image)
     lateinit var civProfileImage: CircleImageView

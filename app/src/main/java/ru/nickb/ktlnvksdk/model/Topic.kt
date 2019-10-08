@@ -7,25 +7,26 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
 
-class Topic : RealmObject(), Identifiable {
-
-    override fun getId(): Int {
-       return id!!
-    }
+open class Topic : RealmObject(), Identifiable {
 
     @PrimaryKey
     @SerializedName("id")
     @Expose
-    var id: Int? = 0
+     var id: Int? = 0
 
     @SerializedName("title")
     @Expose
-    var title: String = null!!
-
+    var title: String = ""
 
     @SerializedName("comments")
     @Expose
-    var comments: Int = 0
+     var comments: Int = 0
 
-    var groupId: Int = 0
+    var groupid: Int = 0
+
+    override fun getId(): Int {
+        return id!!
+    }
+
+
 }

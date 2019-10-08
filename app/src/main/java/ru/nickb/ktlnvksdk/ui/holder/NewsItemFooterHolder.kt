@@ -31,7 +31,7 @@ class NewsItemFooterHolder(itemView: View) : BaseViewHolder<NewsItemFooterViewMo
 
     @BindView(R.id.tv_comments_icon)
     lateinit var tvCommentIcon: TextView
-    @BindView(R.id.tv_comments_count)
+    @BindView(R.id.tv_comments_countt)
     lateinit var tvCommentsCount: TextView
 
     @BindView(R.id.tv_reposts_icon)

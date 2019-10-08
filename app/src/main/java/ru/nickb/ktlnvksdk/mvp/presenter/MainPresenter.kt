@@ -20,10 +20,7 @@ import ru.nickb.ktlnvksdk.mvp.view.MainView
 import ru.nickb.ktlnvksdk.rest.api.UsersApi
 import ru.nickb.ktlnvksdk.rest.model.request.UsersGetRequestModel
 import ru.nickb.ktlnvksdk.rest.model.response.Full
-import ru.nickb.ktlnvksdk.ui.fragment.BaseFragment
-import ru.nickb.ktlnvksdk.ui.fragment.MembersFragment
-import ru.nickb.ktlnvksdk.ui.fragment.MyPostsFragment
-import ru.nickb.ktlnvksdk.ui.fragment.NewsFeedFragment
+import ru.nickb.ktlnvksdk.ui.fragment.*
 import java.util.concurrent.Callable
 import javax.inject.Inject
 
@@ -84,6 +81,8 @@ class MainPresenter: MvpPresenter<MainView>() {
             1 -> fragment = NewsFeedFragment()
             2 -> fragment = MyPostsFragment()
             4 -> fragment = MembersFragment()
+            5 -> fragment = BoardFragment()
+            6 -> fragment = InfoFragment()
         }
 
         if(fragment != null && !myFragmentManager.isAlreadyContains(fragment)) {

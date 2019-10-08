@@ -10,7 +10,7 @@ open class ApiConstants {
        const val DEFAULT_USER_FIELDS = "photo_100"
        const val DEFAULT_MEMBER_FIELDS = "name,photo_100"
        const val MY_GROUP_ID = -86529522
-
+       const val DEFAULT_GROUP_FIELDS = "status,description,site,links,contacts"
     }
 
 

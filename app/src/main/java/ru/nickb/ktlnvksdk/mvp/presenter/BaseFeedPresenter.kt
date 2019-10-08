@@ -35,34 +35,6 @@ abstract class BaseFeedPresenter<V : BaseFeedView> : MvpPresenter<V>() {
         }
         mIsInLoading = true
 
-     /*   mNetworkManager.getNetworkObservable()
-            .flatMap(object: Function<Boolean, ObservableSource<out BaseViewModel>> {
-                @Throws(Exception::class)
-                override fun apply(aBoolean: Boolean): ObservableSource<out BaseViewModel> {
-                   if(aBoolean && offset > 0)  {
-                       return Observable.empty()
-                   }
-                  return when(aBoolean)  {
-                      true -> onCreateLoadDataObservable(count, offset)
-                      else -> onCreateRestoreDataObservable()
-                  }
-
-                }})
-                .toList()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { onLoadingStart(progressType) }
-            .doFinally { onLoadingFinish(progressType) }
-            .subscribe(object : Consumer<MutableList<BaseViewModel>>{
-                override fun accept(repositories: MutableList<BaseViewModel>) {
-                    onLoadingSuccess(progressType, repositories)
-                }
-
-            }, Consumer<Throwable> { error ->
-                error?.printStackTrace()
-                onLoadingFailed(error!!)
-            })*/
-
 
         mNetworkManager.getNetworkObservable()
             .flatMap(object : Function<Boolean, ObservableSource<out BaseViewModel>> {
