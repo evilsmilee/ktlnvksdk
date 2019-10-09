@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.BindView
 import butterknife.ButterKnife
-import kotlinx.android.synthetic.main.fragment_feed.*
 import ru.nickb.ktlnvksdk.R
 import ru.nickb.ktlnvksdk.common.manager.BaseAdapter
 import ru.nickb.ktlnvksdk.common.manager.MyLinearLayoutManager
@@ -86,7 +85,7 @@ abstract class BaseFeedFragment : BaseFragment(), BaseFeedView {
     private fun setUpSwipeToRefreshLayout(view: View) {
         mSwipeRefreshLayout.setOnRefreshListener{
             onCreateFeedPresenter().loadRefresh()
-        swipe_refresh.isRefreshing = false}
+        mSwipeRefreshLayout.isRefreshing = false}
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
         mProgressBar = getBaseActivity().getProgressBar()
 

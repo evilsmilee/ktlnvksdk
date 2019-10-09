@@ -8,10 +8,10 @@ import ru.nickb.ktlnvksdk.MyApplication
 import ru.nickb.ktlnvksdk.consts.ApiConstants
 import ru.nickb.ktlnvksdk.model.Member
 import ru.nickb.ktlnvksdk.model.view.BaseViewModel
-import ru.nickb.ktlnvksdk.model.view.GroupsGetMembersRequestModel
 import ru.nickb.ktlnvksdk.model.view.MemberViewModel
 import ru.nickb.ktlnvksdk.mvp.view.BaseFeedView
 import ru.nickb.ktlnvksdk.rest.api.GroupsApi
+import ru.nickb.ktlnvksdk.rest.model.request.GroupsGetMembersRequestModel
 import ru.nickb.ktlnvksdk.rest.model.response.BaseItemResponse
 import ru.nickb.ktlnvksdk.rest.model.response.Full
 import java.util.concurrent.Callable

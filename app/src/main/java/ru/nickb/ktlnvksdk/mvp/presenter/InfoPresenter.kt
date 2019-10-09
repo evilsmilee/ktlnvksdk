@@ -1,8 +1,11 @@
 package ru.nickb.ktlnvksdk.mvp.presenter
 
+import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
+import io.reactivex.functions.Function
 import io.realm.Realm
 import ru.nickb.ktlnvksdk.MyApplication
 import ru.nickb.ktlnvksdk.consts.ApiConstants
@@ -14,6 +17,7 @@ import ru.nickb.ktlnvksdk.model.view.InfoStatusViewModel
 import ru.nickb.ktlnvksdk.mvp.view.BaseFeedView
 import ru.nickb.ktlnvksdk.rest.api.GroupsApi
 import ru.nickb.ktlnvksdk.rest.model.request.GroupsGetByIdRequestModel
+import ru.nickb.ktlnvksdk.rest.model.response.Full
 import java.util.concurrent.Callable
 import javax.inject.Inject
 
@@ -34,8 +38,19 @@ class InfoPresenter: BaseFeedPresenter<BaseFeedView>() {
 
    override fun onCreateLoadDataObservable(count: Int, offset: Int): Observable<BaseViewModel> {
         return mGroupApi.getById(GroupsGetByIdRequestModel(ApiConstants.MY_GROUP_ID).toMap())
-            .flatMap<Group> {listFull -> Observable.fromIterable<Group>(listFull.response)}
-            .doOnNext(Consumer<Group> { item -> this@InfoPresenter.saveToDb(item) })
+            .flatMap(object : Function<Full<List<Group>>, ObservableSource<out Group>> {
+                override fun apply(t: Full<List<Group>>): ObservableSource<out Group> {
+                    Log.i("createLoadData", t.response!!.get(0).status)
+                    return Observable.fromIterable(t.response)
+                }
+
+            })
+            .doOnNext(object : Consumer<Group> {
+                override fun accept(t: Group?) {
+                    saveToDb(t!!)
+                }
+
+            })
             .flatMap { group -> Observable.fromIterable(parsePojoModel(group)) }
     }
 
@@ -48,6 +63,7 @@ class InfoPresenter: BaseFeedPresenter<BaseFeedView>() {
 
     private fun parsePojoModel(group: Group): List<BaseViewModel> {
         val items: MutableList<BaseViewModel> = ArrayList()
+        Log.i("createLoadData", group.status)
         items.add(InfoStatusViewModel(group))
         items.add(InfoContactsViewModel())
         items.add(InfoLinksViewModel())

@@ -4,20 +4,29 @@ import com.google.gson.annotations.SerializedName
 import com.vk.sdk.api.VKApiConst
 import ru.nickb.ktlnvksdk.consts.ApiConstants
 
-class GroupsGetByIdRequestModel(group: Int): BaseRequestModel() {
+class GroupsGetByIdRequestModel(groupid: Int) : BaseRequestModel() {
 
     @SerializedName(VKApiConst.GROUP_ID)
-    var groupId: Int = 0
+    internal var groupid: Int = 0
 
     @SerializedName(VKApiConst.FIELDS)
     var fields = ApiConstants.DEFAULT_GROUP_FIELDS
 
     init {
-        groupId = Math.abs(groupId)
+        this.groupid = Math.abs(groupid)
     }
 
-    override fun onMapCreate(map: MutableMap<String?, String?>) {
-        map[VKApiConst.GROUP_ID] = groupId.toString()
+    fun getGroupid(): Int {
+        return groupid
+    }
+
+    fun setGroupid(groupid: Int) {
+        this.groupid = Math.abs(groupid)
+    }
+
+   override fun onMapCreate(map: MutableMap<String?, String?>) {
+        map[VKApiConst.GROUP_ID] = getGroupid().toString()
         map[VKApiConst.FIELDS] = fields
+
     }
 }
